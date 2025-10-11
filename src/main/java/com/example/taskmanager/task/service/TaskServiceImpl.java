@@ -8,6 +8,7 @@ import com.example.taskmanager.task.model.Task;
 import com.example.taskmanager.task.model.TaskDao;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -35,12 +36,14 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    @Transactional
     public TaskResponse createTask(CreateTaskRequest request) {
         Task task = taskMapper.toEntity(request);
         return taskMapper.toResponse(taskDao.save(task));
     }
 
     @Override
+    @Transactional
     public TaskResponse updateTask (Long id, UpdateTaskRequest request) {
         Task task = taskDao.findById(id).orElseThrow(() -> new EntityNotFoundException("Task with id " + id + " not found"));
         taskMapper.updateTaskFromDto(request, task);
