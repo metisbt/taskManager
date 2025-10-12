@@ -13,6 +13,6 @@ public enum TaskStatusDto {
     @JsonCreator
     public static TaskStatusDto fromString(String value) {
         return Arrays.stream(TaskStatusDto.values()).filter(t -> t.name().equalsIgnoreCase(value)).findFirst()
-                .orElseThrow(() -> new IllegalArgumentException("Invalid coverage type: " + value));
+                .orElseThrow(() -> new IllegalArgumentException("Invalid task status: " + value));
     }
 }

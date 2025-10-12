@@ -1,10 +1,14 @@
 package com.example.taskmanager.task.controller;
 
 
+import com.example.taskmanager.task.dto.ApiResponse;
 import com.example.taskmanager.task.dto.CreateTaskRequest;
 import com.example.taskmanager.task.dto.TaskResponse;
 import com.example.taskmanager.task.dto.UpdateTaskRequest;
 import com.example.taskmanager.task.service.TaskService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,32 +24,49 @@ public class TaskController {
     }
 
     @GetMapping
-    public List<TaskResponse> getAllTasks() {
-        return taskService.getAllTasks();
+    public ResponseEntity<ApiResponse<List<TaskResponse>>> getAllTasks() {
+        List<TaskResponse> tasks = taskService.getAllTasks();
+        if (tasks.isEmpty()) {
+            return new ResponseEntity<>(ApiResponse.notFound("Tasks not found"), HttpStatus.NOT_FOUND);
+        }
+        else {
+            return new ResponseEntity<>(ApiResponse.success(tasks, "All tasks retrieved successfully."), HttpStatus.OK);
+        }
     }
 
     @GetMapping("/{id}")
-    public TaskResponse getTaskById(@PathVariable Long id) {
-        return taskService.getTaskById(id);
+    public ResponseEntity<ApiResponse<TaskResponse>> getTaskById(@PathVariable Long id) {
+        TaskResponse task = taskService.getTaskById(id);
+        if (task == null) {
+            return new ResponseEntity<>(ApiResponse.notFound("Task not found with id : " + id), HttpStatus.NOT_FOUND);
+        }
+        else {
+            return new ResponseEntity<>(ApiResponse.success(task, "Task with id : " + id + " retrieved successfully."), HttpStatus.OK);
+
+        }
     }
 
-    @GetMapping("/{title}")
-    public TaskResponse getTaskByTitle(@PathVariable String title) {
-        return taskService.getTaskByTitle(title);
-    }
+//    @GetMapping("/{title}")
+//    public TaskResponse getTaskByTitle(@PathVariable String title) {
+//        return taskService.getTaskByTitle(title);
+//    }
 
     @PostMapping
-    public TaskResponse createTask(@RequestBody CreateTaskRequest request) {
-        return taskService.createTask(request);
+    public ResponseEntity<ApiResponse<TaskResponse>> createTask(@Valid @RequestBody CreateTaskRequest request) {
+        TaskResponse task = taskService.createTask(request);
+        return new ResponseEntity<>(ApiResponse.success(task, "Task created successfully"), HttpStatus.CREATED);
+//        return taskService.createTask(request);
     }
 
     @PutMapping("/{id}")
-    public TaskResponse updateTask(@PathVariable Long id, @RequestBody UpdateTaskRequest request) {
-        return taskService.updateTask(id, request);
+    public ResponseEntity<ApiResponse<TaskResponse>> updateTask(@PathVariable Long id, @RequestBody UpdateTaskRequest request) {
+        TaskResponse updatedTask =  taskService.updateTask(id, request);
+        return new ResponseEntity<>(ApiResponse.success(updatedTask, "Task updated successfully"), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteTask(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
         taskService.deleteTaskById(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

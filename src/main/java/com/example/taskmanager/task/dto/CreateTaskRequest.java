@@ -1,14 +1,19 @@
 package com.example.taskmanager.task.dto;
 
-import com.example.taskmanager.task.model.PriorityType;
-import com.example.taskmanager.task.model.TaskStatus;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
 @Data
 public class CreateTaskRequest {
 
+    @NotBlank(message = "Title is required.")
     private String title;
     private String description;
-    private TaskStatus taskStatus;
-    private PriorityType priorityType;
+
+    @NotNull(message = "Task status is required.")
+    private TaskStatusDto taskStatus;
+
+    @NotNull(message = "Priority is required.")
+    private PriorityTypeDto priorityType;
 }
