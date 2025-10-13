@@ -13,7 +13,7 @@ public class TaskNotFoundException extends RuntimeException {
         this.id = id;
     }
 
-    public Long getId() {
+    public Long id() {
         return id;
     }
 }

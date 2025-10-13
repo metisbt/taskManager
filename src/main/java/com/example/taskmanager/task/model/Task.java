@@ -21,6 +21,6 @@ public class Task {
 
     private PriorityType priorityType;
 
-    private TaskStatus taskStatus;
+    private TaskStatus taskStatus = TaskStatus.ToDo;
 
 }

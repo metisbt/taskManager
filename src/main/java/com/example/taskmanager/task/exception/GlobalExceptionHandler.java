@@ -2,6 +2,7 @@ package com.example.taskmanager.task.exception;
 
 
 import com.example.taskmanager.task.dto.ApiResponse;
+import com.example.taskmanager.user.exception.UserAlreadyExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -38,5 +39,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<Void>> handleValidationExceptions(MethodArgumentNotValidException ex, WebRequest request) {
         String errors = ex.getBindingResult().getFieldErrors().stream().map(error -> error.getField() + ": " + error.getDefaultMessage()).collect(Collectors.joining(", "));
         return new ResponseEntity<>(ApiResponse.error("Validation failed", errors), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UserAlreadyExistsException.class)
+    public ResponseEntity<ApiResponse<Void>> handleUserAlreadyExistsException (UserAlreadyExistsException ex, WebRequest request) {
+        return new ResponseEntity<>(ApiResponse.error("User already exists", ex.getMessage()), HttpStatus.CONFLICT);
     }
 }

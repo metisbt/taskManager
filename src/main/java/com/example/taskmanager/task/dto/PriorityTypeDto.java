@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Arrays;
 
-import static java.util.Locale.filter;
-
 public enum PriorityTypeDto {
     High,
     Medium,

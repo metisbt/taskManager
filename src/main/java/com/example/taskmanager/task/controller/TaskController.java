@@ -1,6 +1,5 @@
 package com.example.taskmanager.task.controller;
 
-
 import com.example.taskmanager.task.dto.ApiResponse;
 import com.example.taskmanager.task.dto.CreateTaskRequest;
 import com.example.taskmanager.task.dto.TaskResponse;
@@ -46,16 +45,11 @@ public class TaskController {
         }
     }
 
-//    @GetMapping("/{title}")
-//    public TaskResponse getTaskByTitle(@PathVariable String title) {
-//        return taskService.getTaskByTitle(title);
-//    }
 
     @PostMapping
     public ResponseEntity<ApiResponse<TaskResponse>> createTask(@Valid @RequestBody CreateTaskRequest request) {
         TaskResponse task = taskService.createTask(request);
         return new ResponseEntity<>(ApiResponse.success(task, "Task created successfully"), HttpStatus.CREATED);
-//        return taskService.createTask(request);
     }
 
     @PutMapping("/{id}")
