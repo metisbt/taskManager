@@ -17,7 +17,7 @@ public interface UserMapper {
 
     User toEntityRegister(RegisterUserRequest registerUserRequest);
 
-    User toEntityLogin(LoginUserRequest loginUserRequest);
+//    User toEntityLogin(LoginUserRequest loginUserRequest);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     void updateUserFromDto(UpdateUserRequest updateUserRequest, @MappingTarget User user);
