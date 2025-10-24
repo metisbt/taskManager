@@ -7,6 +7,10 @@ import com.example.taskmanager.task.exception.TaskNotFoundException;
 import com.example.taskmanager.task.mapper.TaskMapper;
 import com.example.taskmanager.task.model.Task;
 import com.example.taskmanager.task.model.TaskDao;
+import com.example.taskmanager.user.exception.UserNotFoundException;
+import com.example.taskmanager.user.model.User;
+import com.example.taskmanager.user.model.UserDao;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,9 +23,12 @@ public class TaskServiceImpl implements TaskService {
 
     private final TaskMapper taskMapper ;
 
-    public TaskServiceImpl(TaskDao taskDao, TaskMapper taskMapper) {
+    private final UserDao userDao;
+
+    public TaskServiceImpl(TaskDao taskDao, TaskMapper taskMapper, UserDao userDao) {
         this.taskDao = taskDao;
         this.taskMapper = taskMapper;
+        this.userDao = userDao;
     }
 
     @Override
@@ -38,7 +45,10 @@ public class TaskServiceImpl implements TaskService {
     @Override
     @Transactional
     public TaskResponse createTask(CreateTaskRequest request) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userDao.findByUserName(username).orElseThrow(() -> new UserNotFoundException(username, username));
         Task task = taskMapper.toEntity(request);
+        task.setCreatedBy(user);
         return taskMapper.toResponse(taskDao.save(task));
     }
 

@@ -1,5 +1,6 @@
 package com.example.taskmanager.task.dto;
 
+import com.example.taskmanager.user.model.User;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
