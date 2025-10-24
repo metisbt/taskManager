@@ -17,5 +17,5 @@ public interface TaskMapper {
     Task toEntity (CreateTaskRequest createTaskRequest);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    void updateTaskFromDto (UpdateTaskRequest updateTaskRequest, @MappingTarget Task task);
+    Task updateTaskFromDto (UpdateTaskRequest updateTaskRequest, @MappingTarget Task task);
 }

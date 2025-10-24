@@ -55,8 +55,11 @@ public class TaskServiceImpl implements TaskService {
     @Override
     @Transactional
     public TaskResponse updateTask (Long id, UpdateTaskRequest request) {
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userDao.findByUserName(username).orElseThrow(() -> new UserNotFoundException(username, username));
         Task task = taskDao.findById(id).orElseThrow(() -> new TaskNotFoundException(id));
-        taskMapper.updateTaskFromDto(request, task);
+        Task updateTask = taskMapper.updateTaskFromDto(request, task);
+        updateTask.setUpdateBy(user);
         return taskMapper.toResponse(taskDao.save(task));
     }
 
