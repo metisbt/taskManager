@@ -26,7 +26,7 @@ public class Task {
     private User createdBy;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "update_by_id", nullable = false)
+    @JoinColumn(name = "update_by", nullable = false)
     private User updateBy;
 
 }
