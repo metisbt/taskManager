@@ -1,7 +1,7 @@
 package com.example.taskmanager.user.dto;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 
@@ -16,8 +16,11 @@ public class RegisterUserRequest {
     @Size(min = 3, max = 50)
     private String password;
 
-    @NotBlank(message = "Email is required")
-    @Email
-    private String email;
+    @NotNull(message = "User role is required")
+    private RoleDto role;
+
+//    @NotBlank(message = "Email is required")
+//    @Email
+//    private String email;
 
 }

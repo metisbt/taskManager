@@ -28,7 +28,7 @@ public class User {
     private String password;
 
     @Enumerated(EnumType.STRING)
-    private Role role = Role.USER;
+    private Role role;
 
     @CreatedDate
     private LocalDateTime createdAt = LocalDateTime.now();
