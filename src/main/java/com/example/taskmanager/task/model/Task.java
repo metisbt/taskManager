@@ -1,10 +1,8 @@
 package com.example.taskmanager.task.model;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.example.taskmanager.user.model.User;
+import jakarta.persistence.*;
 import lombok.Data;
 
 @Entity
@@ -22,5 +20,13 @@ public class Task {
     private PriorityType priorityType;
 
     private TaskStatus taskStatus = TaskStatus.ToDo;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "created_by",  nullable = false)
+    private User createdBy;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "update_by_id", nullable = false)
+    private User updateBy;
 
 }
