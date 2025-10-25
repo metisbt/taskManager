@@ -12,7 +12,6 @@ import com.example.taskmanager.user.exception.UserNotFoundException;
 import com.example.taskmanager.user.model.Role;
 import com.example.taskmanager.user.model.User;
 import com.example.taskmanager.user.model.UserDao;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,20 +40,33 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<TaskResponse> getAllTasks() {
+    public List<TaskResponse> getTotalTasks() {
         var user = getCurrentUser();
 
         if (user.getRole().equals(Role.ADMIN)) {
             return taskDao.findAll().stream().map(taskMapper::toResponse).toList();
         }
-        return taskDao.findAll().stream()
+        else {
+            throw new TaskAccessDeniedException();
+        }
+    }
+
+    @Override
+    public List<TaskResponse> getAllTasks() {
+        var user = getCurrentUser();
+
+        if (user.getRole().equals(Role.ADMIN)) {
+            return taskDao.findAllActiveTasks()
+                    .stream().map(taskMapper::toResponse).toList();
+        }
+        return taskDao.findAllActiveTasks().stream()
                 .filter(t -> t.getCreatedBy().getId().equals(user.getId()))
                 .map(taskMapper::toResponse).toList();
     }
 
     @Override
     public TaskResponse getTaskById(Long id) {
-        Task task = taskDao.findById(id).orElseThrow(() -> new TaskNotFoundException(id));
+        Task task = taskDao.findActiveById(id).orElseThrow(() -> new TaskNotFoundException(id));
         var user = getCurrentUser();
 
         if (user.getRole().equals(Role.USER) && !task.getCreatedBy().getId().equals(user.getId())) {
@@ -97,6 +109,10 @@ public class TaskServiceImpl implements TaskService {
         if (user.getRole().equals(Role.USER) && !task.getCreatedBy().getId().equals(user.getId())) {
             throw new TaskAccessDeniedException();
         }
-        taskDao.delete(task);
+
+        task.setDeleted(true);
+        task.setDeletedBy(user);
+        task.setDeletedAt(LocalDateTime.now());
+        taskDao.save(task);
     }
 }

@@ -17,4 +17,7 @@ public class TaskResponse {
     private String updatedBy;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private boolean deleted;
+    private String deletedBy;
+    private LocalDateTime deletedAt;
 }

@@ -11,6 +11,7 @@ public interface TaskMapper {
 
     @Mapping(target = "createdBy", source = "createdBy.userName")
     @Mapping(target = "updatedBy", source = "updatedBy.userName")
+    @Mapping(target = "deletedBy", source = "deletedBy.userName")
     TaskResponse toResponse (Task task);
 
     Task toEntity (CreateTaskRequest createTaskRequest);

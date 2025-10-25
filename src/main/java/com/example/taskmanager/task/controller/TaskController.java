@@ -22,6 +22,17 @@ public class TaskController {
         this.taskService = taskService;
     }
 
+    @GetMapping("/total-tasks")
+    public ResponseEntity<ApiResponse<List<TaskResponse>>> getTotalTasks() {
+        List<TaskResponse> tasks = taskService.getTotalTasks();
+        if (tasks.isEmpty()) {
+            return new ResponseEntity<>(ApiResponse.notFound("Tasks not found"), HttpStatus.NOT_FOUND);
+        }
+        else {
+            return new ResponseEntity<>(ApiResponse.success(tasks, "All tasks retrieved successfully."), HttpStatus.OK);
+        }
+    }
+
     @GetMapping
     public ResponseEntity<ApiResponse<List<TaskResponse>>> getAllTasks() {
         List<TaskResponse> tasks = taskService.getAllTasks();

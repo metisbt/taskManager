@@ -10,6 +10,8 @@ import java.util.List;
 public interface TaskService {
     List<TaskResponse> getAllTasks();
 
+    List<TaskResponse> getTotalTasks();
+
     TaskResponse getTaskById(Long id);
 
     TaskResponse createTask (CreateTaskRequest createTaskRequest);

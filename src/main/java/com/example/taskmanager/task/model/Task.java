@@ -34,4 +34,12 @@ public class Task {
     private LocalDateTime createdAt =  LocalDateTime.now();
 
     private LocalDateTime updatedAt;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "delete_by")
+    private User deletedBy;
+
+    private LocalDateTime deletedAt;
+
+    private boolean deleted = false;
 }
