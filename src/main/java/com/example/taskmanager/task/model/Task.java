@@ -5,6 +5,8 @@ import com.example.taskmanager.user.model.User;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Data
 public class Task {
@@ -26,7 +28,10 @@ public class Task {
     private User createdBy;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "update_by", nullable = false)
-    private User updateBy;
+    @JoinColumn(name = "update_by")
+    private User updatedBy;
 
+    private LocalDateTime createdAt =  LocalDateTime.now();
+
+    private LocalDateTime updatedAt;
 }
