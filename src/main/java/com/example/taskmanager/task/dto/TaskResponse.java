@@ -1,11 +1,13 @@
 package com.example.taskmanager.task.dto;
 
 import com.example.taskmanager.user.model.User;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import java.time.LocalDateTime;
 
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class TaskResponse {
 
     private Long id;
