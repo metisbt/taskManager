@@ -8,5 +8,4 @@ import com.example.taskmanager.user.dto.UserResponse;
 public interface UserService {
     UserResponse register(RegisterUserRequest registerUserRequest);
     UserLoginResponse login(LoginUserRequest loginUserRequest);
-
 }
